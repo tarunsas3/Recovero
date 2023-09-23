@@ -1,5 +1,6 @@
 const Post = require("../models/post");
 const User = require("../models/user");
+const Comment = require("../models/comment");
 
 module.exports.create = async (req, res) => {
   try {
@@ -62,9 +63,13 @@ module.exports.update = async (req, res) => {
     if (String(post.author) !== String(user._id)) {
       return res.status(403).json({ message: "Access denied" });
     }
-
     post.title = updatedData.title;
-    post.content = updatedData.content;
+    post.content = {
+      text: updatedData["content.text"],
+      image: updatedData["content.image"],
+      tags: updatedData["content.tags"],
+    };
+
     await post.save();
 
     return res.status(200).json({
@@ -95,16 +100,22 @@ module.exports.delete = async (req, res) => {
       return res.status(403).json({ message: "Access denied" });
     }
 
-    await Post.findByIdAndRemove(postId);
+    await Comment.deleteMany({ post: postId });
+
+    const deletedPost = await Post.findOneAndDelete({ _id: postId });
+
+    if (!deletedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
 
     await User.findByIdAndUpdate(user._id, { $pull: { posts: postId } });
 
     return res.status(200).json({
       message: "Post deleted successfully",
-      postId: post._id,
-      title: post.title,
-      content: post.content,
-      author: post.author,
+      postId: deletedPost._id,
+      title: deletedPost.title,
+      content: deletedPost.content,
+      author: deletedPost.author,
     });
   } catch (err) {
     console.error(err);
