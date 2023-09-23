@@ -1,2 +1,3 @@
-# Recovero
-This is a RESTful API developed using ExpressJS and MongoDB for handling social media data, including posts, comments, and user profiles. This project Includes features such as user authentication and authorization for all the CRUD operations, MongoDB is utilized as the database to store social media content.
+![1](https://github.com/tarunsas3/Recovero/assets/60286295/9a318b3d-0d4e-47cf-bb48-81f7a912d728)
+![2](https://github.com/tarunsas3/Recovero/assets/60286295/85e6326f-6598-4053-b132-5d358bdb8b08)
+![3](https://github.com/tarunsas3/Recovero/assets/60286295/6355e3d2-3371-4a47-90c2-b703e3827794)
